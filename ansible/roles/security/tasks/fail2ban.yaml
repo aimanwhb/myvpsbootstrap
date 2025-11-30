@@ -1,0 +1,23 @@
+---
+- name: Create fail2ban sshd config file
+  ansible.builtin.file:
+    path: /etc/fail2ban/jail.d/ssh.local
+    state: touch
+
+- name: Copy config to the config file
+  ansible.builtin.copy:
+    content: |
+      [sshd]
+      enabled = true
+      port    = ssh
+      filter  = sshd
+      logpath = /var/log/secure
+      maxretry = 3
+      bantime  = 600
+      findtime = 600
+    dest: /etc/fail2ban/jail.d/ssh.local
+
+- name: Restart fail2ban service
+  ansible.builtin.service:
+    name: fail2ban
+    state: restarted

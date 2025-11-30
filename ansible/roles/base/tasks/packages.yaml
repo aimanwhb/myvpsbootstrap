@@ -1,0 +1,21 @@
+---
+- name: Perform a full system update and upgrade
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+
+- name: Install required packages
+  ansible.builtin.dnf:
+    name: "{{ packages }}"
+    state: present
+
+- name: Install passlib via pip - hash requirement
+  ansible.builtin.pip:
+    name: passlib
+    executable: pip3
+
+- name: Enable required service
+  ansible.builtin.service:
+    name: "{{ services }}"
+    state: started
+    enabled: yes

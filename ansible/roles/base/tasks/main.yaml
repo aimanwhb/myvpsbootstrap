@@ -1,0 +1,9 @@
+---
+- name: Include packages
+  import_tasks: package.yaml
+
+- name: Stop/start firewalld 
+  ansible.builtin.service:
+    name: firewalld 
+    state: "{{ firewalld_state }}"
+
