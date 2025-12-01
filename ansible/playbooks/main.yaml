@@ -2,12 +2,27 @@
 - name: Full server setup
   hosts: local
   become: true
+  gather_facts: true
   vars_files:
-    - var/vars.yaml   
-
+    - var/vars.yaml
+    
   roles:
-    - base        # installs packages and base services
-    - security    # hardens SSH, firewall, fail2ban
-    - users       # creates users & authorized_keys
-    - console     # installs Jenkins
-    - k3s         # installs K3s
+    # Base system packages and services
+    - role: base
+      tags: ['base']
+
+    # Security hardening (SSH, firewall, fail2ban)
+    - role: security
+      tags: ['security']
+
+    # User accounts and SSH keys
+    - role: users
+      tags: ['users']
+
+    # Jenkins / Console installation
+    - role: console
+      tags: ['console']
+
+    # K3s installation
+    - role: k3s
+      tags: ['k3s']
