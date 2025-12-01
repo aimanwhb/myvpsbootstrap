@@ -11,6 +11,7 @@
 
 - name: Enable required service
   ansible.builtin.service:
-    name: "{{ services }}"
+    name: "{{ item }}"
     state: started
     enabled: yes
+  loop: "{{ services }}"
