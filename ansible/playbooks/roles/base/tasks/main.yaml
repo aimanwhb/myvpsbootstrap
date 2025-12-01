@@ -4,10 +4,10 @@
     name: "*"
     state: latest
 
+- name: Include packages
+  import_tasks: packages.yaml
+
 - name: Stop/start firewalld 
   ansible.builtin.service:
     name: firewalld 
     state: "{{ firewalld_state }}"
-
-- name: Include packages
-  import_tasks: package.yaml

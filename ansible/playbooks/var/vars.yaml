@@ -9,6 +9,7 @@ users:
 
 packages:
   - epel-release
+  - firewalld
   - fail2ban
   - nginx
   - python3
