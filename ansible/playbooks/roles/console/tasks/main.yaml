@@ -6,7 +6,7 @@
 
 - name: Copy cockpit config template to config file
   ansible.builtin.template:
-    src: /templates/cockpit_config.j2
+    src: templates/cockpit_config.j2
     dest: /etc/conckpit/cockpit.conf
 
 - name: Create nginx config file
@@ -16,7 +16,7 @@
 
 - name: Copy nginx_cockpit config template to config file
   ansible.builtin.template:
-    src: /templates/nginx_cockpit_config.j2
+    src: templates/nginx_cockpit_config.j2
     dest: /etc/nginx/conf.d/cockpit.conf
 
 - name: Restart cockpit services
