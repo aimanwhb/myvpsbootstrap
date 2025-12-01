@@ -1,5 +1,5 @@
 ---
-- name: Full server setup
+- name: Bootstrap VPS KVM4
   hosts: local
   become: true
   gather_facts: true
