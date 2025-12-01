@@ -10,7 +10,6 @@ Match User root
 
 {% for user in users %}
 # {{ user.name }} users: key-only for SSH
-
 Match User {{ user.name }}
     PasswordAuthentication no
 {% endfor %}
