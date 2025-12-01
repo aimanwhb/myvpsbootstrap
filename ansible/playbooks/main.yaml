@@ -19,9 +19,9 @@
     - role: users
       tags: ['users']
 
-    # Jenkins / Console installation
-    - role: console
-      tags: ['console']
+    # Web UI cockpit installation
+    - role: panel
+      tags: ['panel']
 
     # K3s installation
     - role: k3s

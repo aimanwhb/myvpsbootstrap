@@ -1,13 +1,18 @@
 ---
+- name: Start cockpit service
+  ansible.builtin.service:
+    name: cockpit
+    state: started
+
 - name: Create cockpit config file
   ansible.builtin.file:
-    path: /etc/conckpit/cockpit.conf
+    path: /etc/cockpit/cockpit.conf
     state: touch
 
 - name: Copy cockpit config template to config file
   ansible.builtin.template:
     src: templates/cockpit_config.j2
-    dest: /etc/conckpit/cockpit.conf
+    dest: /etc/cockpit/cockpit.conf
 
 - name: Create nginx config file
   ansible.builtin.file:
@@ -27,8 +32,21 @@
     - cockpit
     - cockpit.socket
 
-- name: Certbot generate/reuse SSL cert
-  ansible.builtin.command: certbot --nginx -d {{ cockpit.domain }} --non-interactive --agree-tos
+- name: Dry-run Certbot for testing
+  ansible.builtin.command: >
+    sudo certbot certonly --nginx -d {{ cockpit.domain }}
+    --non-interactive
+    --agree-tos
+    --email {{ cockpit.email }}
+  register: dryrun_result
+
+- name: Generate or reuse real SSL cert
+  ansible.builtin.command: >
+    sudo certbot --nginx -d {{ cockpit.domain }}
+    --non-interactive
+    --agree-tos
+    --email {{ cockpit.email }}
+  when: dryrun_result.rc == 0
 
 - name: Reload nginx service
   ansible.builtin.service:

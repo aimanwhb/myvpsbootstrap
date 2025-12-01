@@ -16,11 +16,13 @@ packages:
   - python3-pip
   - certbot
   - python3-certbot-nginx
+  - gnupg
 
 services:
   - cockpit.socket
   - nginx
 
 cockpit:
-  - domain: console.aikode.cloud
+  - domain: panel.aikode.cloud
+  - email: aimanwahab28@gmail.com
 
