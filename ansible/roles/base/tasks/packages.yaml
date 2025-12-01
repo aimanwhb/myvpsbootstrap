@@ -1,9 +1,4 @@
 ---
-- name: Perform a full system update and upgrade
-  ansible.builtin.dnf:
-    name: "*"
-    state: latest
-
 - name: Install required packages
   ansible.builtin.dnf:
     name: "{{ packages }}"

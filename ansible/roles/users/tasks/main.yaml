@@ -7,4 +7,3 @@
     groups: "{{ item.groups }}"
     append: yes
   loop: "{{ users }}"
-    

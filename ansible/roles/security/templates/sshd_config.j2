@@ -1,0 +1,16 @@
+# Global defaults
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+PubkeyAuthentication yes
+
+# Root user: key-only
+Match User root
+    PermitRootLogin prohibit-password
+    PasswordAuthentication no
+
+{% for user in users %}
+# {{ user.name }} users: key-only for SSH
+
+Match User {{ user.name }}
+    PasswordAuthentication no
+{% endfor %}

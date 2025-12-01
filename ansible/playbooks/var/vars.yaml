@@ -1,0 +1,25 @@
+# started/stopped - Testing: stopped
+firewalld_state: stopped
+
+users:
+  - name: admin
+    password: ""
+    groups: wheel
+    ssh_key: ""
+
+packages:
+  - epel-release
+  - fail2ban
+  - nginx
+  - python3
+  - python3-pip
+  - certbot
+  - python3-certbot-nginx
+
+services:
+  - cockpit.socket
+  - nginx
+
+cockpit:
+  - domain: console.aikode.cloud
+

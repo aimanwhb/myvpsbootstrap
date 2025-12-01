@@ -1,9 +1,13 @@
 ---
-- name: Include packages
-  import_tasks: package.yaml
+- name: Perform a full system update and upgrade
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
 
 - name: Stop/start firewalld 
   ansible.builtin.service:
     name: firewalld 
     state: "{{ firewalld_state }}"
 
+- name: Include packages
+  import_tasks: package.yaml

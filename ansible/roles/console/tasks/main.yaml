@@ -1,0 +1,36 @@
+---
+- name: Create cockpit config file
+  ansible.builtin.file:
+    path: /etc/conckpit/cockpit.conf
+    state: touch
+
+- name: Copy cockpit config template to config file
+  ansible.builtin.template:
+    src: /templates/cockpit_config.j2
+    dest: /etc/conckpit/cockpit.conf
+
+- name: Create nginx config file
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d/cockpit.conf
+    state: touch
+
+- name: Copy nginx_cockpit config template to config file
+  ansible.builtin.template:
+    src: /templates/nginx_cockpit_config.j2
+    dest: /etc/nginx/conf.d/cockpit.conf
+
+- name: Restart cockpit services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - cockpit
+    - cockpit.socket
+
+- name: Certbot generate/reuse SSL cert
+  ansible.builtin.command: certbot --nginx -d {{ cockpit.domain }} --non-interactive --agree-tos
+
+- name: Reload nginx service
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded

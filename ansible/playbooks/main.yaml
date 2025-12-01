@@ -9,5 +9,5 @@
     - base        # installs packages and base services
     - security    # hardens SSH, firewall, fail2ban
     - users       # creates users & authorized_keys
-    - jenkins     # installs Jenkins
+    - console     # installs Jenkins
     - k3s         # installs K3s

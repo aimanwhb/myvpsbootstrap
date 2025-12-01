@@ -1,4 +1,4 @@
 # Include security sub-tasks
-- import_tasks: ssh.yaml
+- import_tasks: sshd.yaml
 - import_tasks: fail2ban.yaml
 - import_tasks: firewalld.yaml
