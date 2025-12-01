@@ -1,5 +1,5 @@
 ---
-- name: Add the user admin
+- name: Create users
   ansible.builtin.user:
     name: "{{ item.name }}"
     password: "{{ item.password | password_hash('sha512') }}"
@@ -7,3 +7,6 @@
     groups: "{{ item.groups }}"
     append: yes
   loop: "{{ users }}"
+
+- name: Set up SSH keys for users
+  include_tasks: authorized_key.yaml
