@@ -19,6 +19,10 @@
     - role: users
       tags: ['users']
 
+    # Manage SSL
+    - role: ssl_management
+      tags: ['ssl_management']
+
     # Web UI cockpit installation
     - role: panel
       tags: ['panel']
