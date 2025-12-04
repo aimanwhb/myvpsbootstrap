@@ -3,10 +3,15 @@ firewalld_state: stopped
 
 ssh_port:
 
-email: 
-
+email:
 git_username:
 ssl_backup_repo:
+
+cockpit_domain:
+k3s_domain:
+k8s_dashboard_domain:
+wikijs_domain:
+jenkins_domain:
 
 users:
   - name: admin
@@ -28,5 +33,3 @@ packages:
 services:
   - cockpit.socket
   - nginx
-
-cockpit_domain:
