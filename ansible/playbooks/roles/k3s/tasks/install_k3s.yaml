@@ -82,3 +82,44 @@
           ]
         }
       }'
+
+- name: Ensure .kube directory exists
+  ansible.builtin.file:
+    path: "/home/{{ item.name }}/.kube"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0700'
+  loop: "{{ users }}"
+
+- name: Copy K3s kubeconfig
+  ansible.builtin.copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "/home/{{ item.name }}/.kube/config"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0600'
+  loop: "{{ users }}"
+
+- name: Ensure KUBECONFIG is set in .bashrc
+  ansible.builtin.lineinfile:
+    path: "/home/{{ item.name }}/.bashrc"
+    line: 'export KUBECONFIG=/home/{{ item.name }}/.kube/config'
+    create: yes
+    state: present
+  become: true
+  become_user: "{{ item.name }}"
+  loop: "{{ users }}"
+
+- name: Display nodes to verify setup
+  ansible.builtin.command: kubectl get nodes --kubeconfig /home/{{ item.name }}/.kube/config
+  loop: "{{ users }}"
+
+- name: Set kubectl alias for all users
+  ansible.builtin.copy:
+    dest: /etc/profile.d/kubectl.sh
+    content: |
+      alias k=kubectl
+    owner: root
+    group: root
+    mode: '0755'
