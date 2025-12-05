@@ -32,21 +32,21 @@
     - cockpit
     - cockpit.socket
 
-- name: Dry-run Certbot for testing
-  ansible.builtin.command: >
-    sudo certbot certonly --nginx -d {{ cockpit_domain }}
-    --non-interactive
-    --agree-tos
-    --email {{ email }}
-  register: dryrun_result
+# - name: Dry-run Certbot for testing
+#   ansible.builtin.command: >
+#     sudo certbot certonly --nginx -d {{ cockpit_domain }}
+#     --non-interactive
+#     --agree-tos
+#     --email {{ email }}
+#   register: dryrun_result
 
-- name: Generate or reuse real SSL cert
-  ansible.builtin.command: >
-    sudo certbot --nginx -d {{ cockpit_domain }}
-    --non-interactive
-    --agree-tos
-    --email {{ email }}
-  when: dryrun_result.rc == 0
+# - name: Generate or reuse real SSL cert
+#   ansible.builtin.command: >
+#     sudo certbot --nginx -d {{ cockpit_domain }}
+#     --non-interactive
+#     --agree-tos
+#     --email {{ email }}
+#   when: dryrun_result.rc == 0
 
 - name: Reload nginx service
   ansible.builtin.service:

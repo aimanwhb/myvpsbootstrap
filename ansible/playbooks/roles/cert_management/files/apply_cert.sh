@@ -1,14 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-if [ -z "${GIT_TOKEN:-}" ] || [ -z "${ROOT_PASSWORD:-}" ] || [ -z "${GIT_USERNAME:-}" ] || [ -z "${GIT_SSL_BACKUP_REPO:-}" ]; then
+if [ -z "${GIT_TOKEN:-}" ] || [ -z "${ROOT_PASSWORD:-}" ] || [ -z "${GIT_USERNAME:-}" ] || [ -z "${CERT_REPO:-}" ] || [ -z "${CERT_FILE:-}" ]; then
   echo "❌ ERROR: Missing required environment variables"
   exit 1
 fi
 
-DEST_DIR="/tmp/secrets"
-
-REPO_URL="https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/${GIT_USERNAME}/${GIT_SSL_BACKUP_REPO}.git"
+DEST_DIR="/tmp/restore-cert"
+REPO_URL="https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/${GIT_USERNAME}/${CERT_REPO}.git"
 
 # =========================
 # CLONE REPO
@@ -23,19 +22,26 @@ else
 fi
 
 # =========================
-# RESTORE SSL
+# Decrypt cert
 # =========================
-echo "🔐 Restoring SSL from encrypted backup..."
-
 gpg --batch --yes --passphrase "$ROOT_PASSWORD" \
-  --decrypt "$DEST_DIR/ssl-backup.tar.gz.gpg" | tar -xzf - -C "$DEST_DIR"
+  --decrypt "$DEST_DIR/$CERT_FILE" | tar -xzf - -C "$DEST_DIR"
 
 if [ ! -d "$DEST_DIR/etc/letsencrypt" ]; then
   echo "❌ ERROR: Decryption succeeded but letsencrypt folder is missing"
   exit 1
 fi
 
+# =========================
+# Apply cert
+# =========================
+echo "🔐 Applying cert from decrypted folder..."
 rm -rf /etc/letsencrypt
 mv "$DEST_DIR/etc/letsencrypt" /etc/
-
 echo "✅ SSL restore complete."
+
+# =========================
+# Cleanup
+# =========================
+echo "Cleanup......."
+rm -rf "$DEST_DIR/etc"

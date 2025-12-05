@@ -40,9 +40,9 @@
     - role: users
       tags: ['users']
 
-    # Manage SSL - Restore and Backup
-    - role: ssl_management
-      tags: ['ssl_management']
+    # Manage Cert - Apply and Backup
+    - role: cert_management
+      tags: ['cert_management']
 
     # Web UI cockpit installation
     - role: panel

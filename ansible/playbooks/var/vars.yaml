@@ -7,7 +7,8 @@ https_traefik_nodeport: 30443
 
 email:
 git_username:
-ssl_backup_repo:
+cert_repo:
+cert_file: #ssl-backup.tar.gz.gpg
 
 cockpit_domain: panel.aikode.cloud
 k8s_dashboard_domain: k8s.aikode.cloud
@@ -28,6 +29,7 @@ packages:
   - epel-release
   - firewalld
   - fail2ban
+  - git
   - nginx
   - python3
   - python3-pip
