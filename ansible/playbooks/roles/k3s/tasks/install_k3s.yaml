@@ -37,52 +37,6 @@
     creates: /usr/local/bin/k3s
   register: k3s_install
 
-- name: Wait for K3s to be ready
-  ansible.builtin.shell:
-    cmd: |
-      timeout 60 bash -c 'until k3s kubectl get nodes 2>/dev/null; do sleep 2; done'
-  when: k3s_install.changed
-
-- name: Verify K3s installation
-  ansible.builtin.shell:
-    cmd: |
-      k3s kubectl get nodes
-      echo "K3s version: $(k3s --version)"
-  register: k3s_verify
-
-- name: Display K3s status
-  ansible.builtin.debug:
-    msg: "{{ k3s_verify.stdout_lines }}"
-
-- name: Wait for traefik to be ready
-  ansible.builtin.shell:
-    cmd: |
-      timeout 60 bash -c 'until k3s kubectl -n kube-system get svc traefik 2>/dev/null; do sleep 2; done'
-
-- name: Update traefik from loadbalancer to nodeport type
-  ansible.builtin.shell:
-    cmd: |
-      kubectl -n kube-system patch svc traefik \
-      -p '{
-        "spec": {
-          "type": "NodePort",
-          "ports": [
-            {
-              "name": "http",
-              "port": 80,
-              "targetPort": 80,
-              "nodePort": {{ traefik_nodeport }}
-            },
-            {
-              "name": "https",
-              "port": 443,
-              "targetPort": 443,
-              "nodePort": 30443
-            }
-          ]
-        }
-      }'
-
 - name: Ensure .kube directory exists for root
   ansible.builtin.file:
     path: /root/.kube
@@ -149,3 +103,50 @@
     owner: root
     group: root
     mode: '0755'
+
+- name: Wait for K3s to be ready
+  ansible.builtin.shell:
+    cmd: |
+      timeout 300 bash -c 'until k3s kubectl get nodes 2>/dev/null; do sleep 2; done'
+  when: k3s_install.changed
+
+- name: Verify K3s installation
+  ansible.builtin.shell:
+    cmd: |
+      k3s kubectl get nodes
+      echo "K3s version: $(k3s --version)"
+  register: k3s_verify
+
+- name: Display K3s status
+  ansible.builtin.debug:
+    msg: "{{ k3s_verify.stdout_lines }}"
+
+- name: Wait for traefik to be ready
+  ansible.builtin.shell:
+    cmd: |
+      timeout 300 bash -c 'until k3s kubectl -n kube-system get svc traefik 2>/dev/null; do sleep 2; done'
+
+- name: Update traefik from loadbalancer to nodeport type
+  ansible.builtin.shell:
+    cmd: |
+      kubectl -n kube-system patch svc traefik \
+      -p '{
+        "spec": {
+          "type": "NodePort",
+          "ports": [
+            {
+              "name": "http",
+              "port": 80,
+              "targetPort": 8000,
+              "nodePort": {{ http_traefik_nodeport }}
+            },
+            {
+              "name": "https",
+              "port": 443,
+              "targetPort": 8443,
+              "nodePort": {{ https_traefik_nodeport }}
+            }
+          ]
+        }
+      }'
+
