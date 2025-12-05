@@ -51,3 +51,11 @@ git commit -m "Backup SSL cert ${DATE}"
 git push origin main
 
 echo "✅ Backup completed: backups/${BACKUP_FILE}"
+
+# =========================
+# Cleanup
+# =========================
+echo "🧹 Cleanup..."
+rm -rf "$TMP_DIR" "$CLONE_DIR" 
+
+echo "🎉 Done!"

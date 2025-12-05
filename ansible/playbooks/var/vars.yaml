@@ -8,7 +8,7 @@ https_traefik_nodeport: 30443
 email:
 git_username:
 cert_repo:
-cert_file: #ssl-backup.tar.gz.gpg
+cert_file: ssl-backup-2025-12-05.tar.gz.gpg
 
 cockpit_domain: panel.aikode.cloud
 k8s_dashboard_domain: k8s.aikode.cloud

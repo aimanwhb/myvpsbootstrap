@@ -1,0 +1,20 @@
+---
+- name: Copy headlamp dashboard config to /tmp
+  ansible.builtin.template:
+    src: templates/k8s_dashboard_config.yaml
+    dest: /tmp/k8s_dashboard_config.yaml
+
+- name: Kubectl apply /tmp/k8s_dashboard_config.yaml
+  ansible.builtin.shell:
+    cmd: |
+      Kubectl apply -f /tmp/k8s_dashboard_config.yaml
+
+- name: Copy k8s_dashboard_nginx template to config file
+  ansible.builtin.template:
+    src: templates/k8s_dashboard_nginx_config.j2
+    dest: /etc/nginx/conf.d/k8s_dashboard.conf
+
+- name: Reload nginx service
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded

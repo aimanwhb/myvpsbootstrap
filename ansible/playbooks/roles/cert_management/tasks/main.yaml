@@ -53,5 +53,5 @@
 - name: Display backup cert result
   ansible.builtin.debug:
     msg: "{{ backup_result.stdout }}"
-  when: backup_result.stdout != "" and "'backup' in ansible_run_tags"
+  when: backup_result is defined and backup_result.stdout | default('') != "" and "'backup' in ansible_run_tags"
   tags: ['backup']

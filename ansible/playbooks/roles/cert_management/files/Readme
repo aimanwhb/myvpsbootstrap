@@ -1,0 +1,14 @@
+Required env var -
+
+GIT_USERNAME
+CERT_REPO
+ROOT_PASSWORD
+GIT_TOKEN
+CERT_FILE
+
+Before deploying any applications, please generate standalone cert and run ansible backup_cert
+- sudo certbot certonly --standalone -d ur.domain.com
+- ansible-playbook -i infraAutoVPS/ansible/inventory/hosts infraAutoVPS/ansible/playbooks/main.yaml --tags "ssl_management" --check
+
+Apply/restore cert to server - run ansible restore_cert
+- ansible-playbook -i infraAutoVPS/ansible/inventory/hosts infraAutoVPS/ansible/playbooks/main.yaml --tags "backup" --check
