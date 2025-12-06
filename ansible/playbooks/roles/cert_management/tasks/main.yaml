@@ -32,7 +32,7 @@
     mode: '0700'
     owner: root
     group: root
-  when: "'backup' in ansible_run_tags"
+  when: "'cert_backup' in ansible_run_tags"
   tags: ['cert_backup']
 
 - name: Backup cert and push to Github
