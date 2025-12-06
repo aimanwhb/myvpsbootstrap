@@ -13,11 +13,17 @@ fi
 DATE=$(date +%F)
 TMP_DIR="/tmp/cert-backup-tmp"
 CLONE_DIR="/tmp/cert-backup-repo"
-BACKUP_FILE="ssl-backup-${DATE}.tar.gz.gpg"
+BACKUP_FILE="cert-backup-${DATE}.tar.gz.gpg"
 REPO_URL="https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/${GIT_USERNAME}/${CERT_REPO}.git"
 
 rm -rf "$TMP_DIR" "$CLONE_DIR"
 mkdir -p "$TMP_DIR"
+
+# =========================
+# Emergency backup
+# =========================
+cp -r /etc/letsencrypt /root/
+
 
 # =========================
 # Encrypt certbot folder
@@ -47,7 +53,7 @@ cp "$TMP_DIR/${BACKUP_FILE}" "$CLONE_DIR/backups/"
 # =========================
 cd "$CLONE_DIR"
 git add "backups/${BACKUP_FILE}"
-git commit -m "Backup SSL cert ${DATE}"
+git commit -m "Backup cert ${DATE}"
 git push origin main
 
 echo "✅ Backup completed: backups/${BACKUP_FILE}"
