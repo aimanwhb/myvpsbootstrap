@@ -24,8 +24,7 @@ PrintMotd no
 PermitUserEnvironment no
 StrictModes yes
 
-AllowUsers {% for user in users %}{{ user.name }} {% endfor %}
-
+#AllowUsers {% for user in users %}{{ user.name }} {% endfor %}
 {% for user in users %}
 Match User {{ user.name }}
     PasswordAuthentication no

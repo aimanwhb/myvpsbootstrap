@@ -48,6 +48,6 @@
     - role: panel
       tags: ['panel']
 
-    # K3s installation
+    # K3s and headlamp dashboard installation
     - role: k3s
       tags: ['k3s']
