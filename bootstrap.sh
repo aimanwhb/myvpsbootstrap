@@ -5,6 +5,10 @@ print_usage() {
     cat <<EOF
 Usage: $0 [options] [tags]
 
+Before running this script, you must export the required environment variables:
+  export ROOT_PASSWORD='your_root_password'
+  export GIT_TOKEN='your_github_token'
+
 Options:
   --check          Run Ansible playbook in dry-run mode (no changes applied)
   --usage, --help  Show this usage message
