@@ -17,7 +17,9 @@ fi
 export ROOT_PASSWORD
 export GIT_TOKEN
 
-GIT_USERNAME= "aimanwhb"
+sudo dnf install git epel-release ansible -y
+
+GIT_USERNAME="aimanwhb"
 MAIN_REPO="https://github.com/$GIT_USERNAME/myvpsbootstrap.git"
 MAIN_DIR="myvpsbootstrap"
 SECRET_REPO="https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/${GIT_USERNAME}/secrets.git"
